@@ -57,7 +57,6 @@ char* isValidParameter(int argc, char* argv[]){
   int i;
   char* sortColumn = "z";
   for(i=0; i<sizeof(argv); i++){
-    printf("ARGS: %s\n", argv[i]);
     if(argv[i]!= NULL){
         //check if -c is present (mandatory)
       if(strcmp("-c", argv[i]) == 0){
@@ -117,7 +116,7 @@ void printDirInfo(char *directory) {
 			int len=strlen(Path);
       if(Path[len-1]=='v'&&Path[len-2]=='s'&&Path[len-3]=='c'){
         if(isAlreadySorted(Path) == 'f'){
-          printf("NOT SORTED! %s\n", Path);
+          printf("NOT SORTED: %s\n", Path);
           //Enable multithreading here
 
         }
@@ -146,7 +145,7 @@ int main(int argc, char * argv[]) {
   char* startingDirectory = ".";
   char* outputDirectory;
   //Check if valid sorting column
-  sortedColumn = isValidParameter();
+  sortedColumn = isValidParameter(argc, argv);
   //determine if starting and output directories present
   int i;
   for(i=0; i<sizeof(argv); i++){
