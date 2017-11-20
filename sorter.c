@@ -8,14 +8,36 @@
 #include "sorter.h"
 #include <math.h>
 
-
-#define ANSI_COLOR_BLUE    "\x1b[34m"
-#define ANSI_COLOR_RESET   "\x1b[0m"
-
 void start(char* filePath, char* filename) {
 
     FILE *fp;
     fp = fopen(filePath,"r");
+}
+char isValidCSV(char* csvFilePath, char* csvFilename){
+  //open csv and check first row
+  //printf("Checking: %s\n", csvFilename);
+
+  char buffer[1024];
+  char *line;
+  char *token;
+  const char* s = ",";
+
+  FILE *file  = fopen(csvFilePath, "r");
+  if(file == NULL){
+    printf("error opening CSV %s\n", csvFilename);
+    return 'f';
+  }
+  //This is the first line in the CSV, check if valid headings
+  line = fgets(buffer, sizeof(buffer), file);
+  token = strtok(line, s);
+  while(token!=NULL){
+    //printf("token: %s\n", token);
+    token = strtok(NULL, s);
+    /*
+      NEED TO HANDLE INVALID HEADINGS CASE
+    */
+  }
+  return 't';
 }
 
 char isValidColumn(char* sortColumn){
@@ -104,7 +126,6 @@ void printDirInfo(char *directory) {
 			strcpy(Path, directory);
 			strcat(Path, "/");
 			strcat(Path, object->d_name);
-
 			int fd = open(Path, O_RDONLY);
 			if (fd < 0) {
 				fprintf(stderr, "Can't open file: %s\n", Path);
@@ -112,13 +133,14 @@ void printDirInfo(char *directory) {
 			}
 			int length = lseek(fd, 0, SEEK_END);
 			close(fd);
-
 			int len=strlen(Path);
       if(Path[len-1]=='v'&&Path[len-2]=='s'&&Path[len-3]=='c'){
         if(isAlreadySorted(Path) == 'f'){
-          printf("NOT SORTED: %s\n", Path);
-          //Enable multithreading here
-
+          //Check if valid CSV
+          if(isValidCSV(Path, object->d_name) == 't'){
+              //Enable multithreading here
+              printf("valid: %s\n", object->d_name);
+          }
         }
 			}
 			free(Path);
@@ -141,6 +163,14 @@ void printDirInfo(char *directory) {
 }
 
 int main(int argc, char * argv[]) {
+  if(argc < 1){
+    printf("invalid parameters\n");
+    exit(1);
+  }
+  if(argc>7){
+    printf("invalid parameters\n");
+    exit(1);
+  }
   char* sortedColumn;
   char* startingDirectory = ".";
   char* outputDirectory;
