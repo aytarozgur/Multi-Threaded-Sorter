@@ -53,31 +53,25 @@ char isValidColumn(char* sortColumn){
   return 't';
 }
 
-char isValidParameter(int argc, char* argv[]){
-
+char* isValidParameter(int argc, char* argv[]){
   int i;
-  char hasC = 'f';
-  char* sortColumn;
+  char* sortColumn = "z";
   for(i=0; i<sizeof(argv); i++){
     printf("ARGS: %s\n", argv[i]);
     if(argv[i]!= NULL){
         //check if -c is present (mandatory)
       if(strcmp("-c", argv[i]) == 0){
-        hasC = 't';
         //next item in argv is going to be the column to sort
         //so check if sortColumn is a valid column to sort on
         sortColumn = argv[i+1];
         if(isValidColumn(sortColumn) == 'f'){
-          return 'f';
+          printf("invalid parameters\n");
+          exit(1);
         }
+        return sortColumn;
       }
-      //check if -d is present (optional)
-      //check if -o is present (optional)
     }
-
   }
-
-  return 't';
 }
 
 char isAlreadySorted(char* newPath){
@@ -148,20 +142,28 @@ void printDirInfo(char *directory) {
 }
 
 int main(int argc, char * argv[]) {
-  //Check if valid parameters (checks for optional and mandatory parameters)
-  if(isValidParameter(argc, argv) == 'f'){
-    printf("Invalid Parameters\n");
-    exit(1);
+  char* sortedColumn;
+  char* startingDirectory = ".";
+  char* outputDirectory;
+  //Check if valid sorting column
+  sortedColumn = isValidParameter();
+  //determine if starting and output directories present
+  int i;
+  for(i=0; i<sizeof(argv); i++){
+    if(argv[i]!=NULL){
+      //check if -d is present (optional)
+      if(strcmp("-d", argv[i]) == 0){
+        startingDirectory = argv[i+1];
+      }
+      //check if -o is present (optional)
+      if(strcmp("-o", argv[i]) == 0){
+        outputDirectory = argv[i+1];
+      }
+    }
   }
-  else{
-    //determine base from parameter ordering
-    char * base = ".";
-  	if (argc >= 2) {
-  		base = argv[1];
-  	}
-  	printf("Directory index from %s\n", base);
-  	printDirInfo(base);
-  }
+
+  printf("Directory index from %s\n", startingDirectory);
+  printDirInfo(startingDirectory);
 
 	return 0;
 }
