@@ -876,7 +876,8 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
 
         }
         //No error in heading so continue parsing
-        else{
+        else
+        {
                 //This is the first line in the CSV, check if valid headings
                 /*line = fgets(buffer, sizeof(buffer), file);
                    token = strtok(line, s);
@@ -890,6 +891,7 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
                 char *line=(char*)malloc(sizeof(char)*500);
                 //this will hold the first line with all the categories
                 fgets(line,500,fp);
+                //printf("this is first line %s",line);
 
                 int commoncounter=0;
                 int t=0;
@@ -911,7 +913,7 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
                 Records* input= (Records*)malloc(sizeof(Records)*8000);
                 //we are gonna find out how many lines the file is
                 int amountOflines=0;
-                int commas=0;//keep track of the amount of commas in line
+                int commas;//keep track of the amount of commas in line
 
                 while(!feof(fp))
                 {
@@ -919,6 +921,7 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
                         amountOflines++;
                 }
 
+                amountOflines--;
                 rewind(fp);//this rewinds the pointer to the top of the file
                 fgets(line,500,fp);//we call fgets to take out the first line with the categories
 
@@ -926,32 +929,46 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
                 char token [300];//holds the value for the category
                 int j=0;//used to iterate through token
                 int s=0;//used to interate through the array
+                int i=0;//used for interating through line
+                int length;
 
                 while(countline <amountOflines)
                 {
-                        int i=0;//used for interating through line
-                        fgets(line,500,fp);//gets the next line
+                        fgets(line,500,fp);
+                        i=0;
+                        commas=0;
+                        length=strlen(line);//gets the next line
+                        //printf("this is a line %s",line);
 
-                        while(i<strlen(line))
+                        while(i<length)
                         {
+
                                 if(line[i]==',')
-                                {
+                                {//printf("this is token %s\n",token);
                                         commas++;
 
                                         switch(commas)
                                         {
+
                                         case 1://this inputs the color token
                                                 strncpy(input[s].color, token, 50);
+                                                //printf("s is:%d and token is %s\n",s,token);
+                                                //printf("input[s].color: %s\n",input[s].color);
                                                 memset(token, 0, 300);//empties token array
+                                                //printf("this is token %s\n",token);
                                                 break;
 
                                         case 2://inputs director_name token
                                                 strncpy(input[s].director_name, token, 50);
+                                                //printf("s is:%d and token is %s\n",s,token);
+                                                //printf("input[s].director_name: %s\n",input[s].director_name);
                                                 memset(token, 0, 300);//empties token array
                                                 break;
 
                                         case 3:
                                                 input[s].num_critic_for_reviews=atoi(token);
+                                                //printf("s is:%d and token is %s\n",s,token);
+                                                //printf("input[s].numcriticforreviews: %d\n",input[s].num_critic_for_reviews);
                                                 memset(token, 0, 300);//empties token array
                                                 break;
 
@@ -1102,7 +1119,7 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
                                                 break;
                                         }
                                         j=0;
-                                        i++;
+                                        //i++;
 
 
 
@@ -1121,11 +1138,19 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
                                                 token[j]=line[i];
                                                 j++;
                                         }
-                                        i++;
+
                                 }
+                        i++;
                         }
+                        //printf("token is %s\n",token);
+                        input[s].movie_facebook_likes=atoi(token);
+                        //printf("input[s].moviefacebooklikes %d\n",input[s].movie_facebook_likes);
+                        memset(token, 0, 300); //empties token array
+
+
                         countline++;
                         s++;
+                        j=0;
                 }
                 printRecord(input, s);
                 mergeSort(&input, 0, s-1);
@@ -1134,8 +1159,6 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
                 //print_csv_file(&input, csvFilePath, csvFilename, s, pathWOcsv);
         }
 }
-
-
 
 char isValidColumn(char* sortColumn){
         if(
