@@ -1,11 +1,14 @@
 #ifndef sorter_h
+#define sorter_h
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 #include <stdlib.h>
 #include <dirent.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <stdio.h>
 #include <pthread.h>
 #include <math.h>
 

@@ -15,7 +15,7 @@ void merge(Records** arr, int l, int m, int r){
                 L[i] = (*arr)[l+i];
         }
         for(i=0; i<n2; i++) {
-                R[i] = (*arr)[m+1+j];
+                R[i] = (*arr)[m+1+i];
         }
 
         i=0; //index of L
@@ -791,7 +791,77 @@ void mergeSort(Records** input, int l, int r){
         }
 }
 
-void parser(char* csvFilePath, char* csvFilename, char* sortedColumn){
+void printRecord(Records* input, int s){
+
+        int arraySize = s;
+        int t=0;
+        for(t=0; t<arraySize; t++) {
+                //  printf("%s ", input[t].color);
+                printf("%s \n", input[t].director_name);
+        }
+
+}
+void print_csv_file(Records** finalInput, char* csvFilePath, char* csvFilename, int arraySize, char* pathWOcsv){
+        char* filename = (char*)malloc(sizeof(char*)*100);
+
+        char* modifiedOriginalFilename = (char*)malloc(sizeof(char*)*100);
+
+        strcat(filename, pathWOcsv);
+        strcat(filename, "/");
+
+        int i=0;
+        while(i<strlen(csvFilename)-4) {
+                modifiedOriginalFilename[i] = csvFilename[i];
+                i++;
+        }
+        strcat(filename, modifiedOriginalFilename);
+        strcat(filename, "-sorted-");
+        strcat(filename, sortedColumn);
+        strcat(filename, ".csv");
+        FILE *file = fopen(filename, "w");
+
+        i=0;
+        printf("loop\n");
+        while(i!=arraySize) {
+                printf("in loop\n");
+                fprintf(file, "%s,", (*finalInput)[i].color);
+                printf("color\n");
+                fprintf(file, "%s,", (*finalInput)[i].director_name);
+                fprintf(file, "%d,", (*finalInput)[i].num_critic_for_reviews);
+                fprintf(file, "%d,", (*finalInput)[i].duration);
+                fprintf(file, "%d,", (*finalInput)[i].director_facebook_likes);
+                fprintf(file, "%d,", (*finalInput)[i].actor_3_facebook_likes);
+                fprintf(file, "%s,", (*finalInput)[i].actor_2_name);
+                fprintf(file, "%d,", (*finalInput)[i].actor_1_facebook_likes);
+                fprintf(file, "%d,", (*finalInput)[i].gross);
+                fprintf(file, "%s,", (*finalInput)[i].genres);
+                fprintf(file, "%s,", (*finalInput)[i].actor_1_name);
+                fprintf(file, "%s,", (*finalInput)[i].movie_title);
+                fprintf(file, "%d,", (*finalInput)[i].num_voted_users);
+                fprintf(file, "%d,", (*finalInput)[i].cast_total_facebook_likes);
+                fprintf(file, "%s,", (*finalInput)[i].actor_3_name);
+                fprintf(file, "%d,", (*finalInput)[i].facenumber_in_poster);
+                fprintf(file, "%s,", (*finalInput)[i].plot_keywords);
+                fprintf(file, "%s,", (*finalInput)[i].movie_imdb_link);
+                fprintf(file, "%d,", (*finalInput)[i].num_user_for_reviews);
+                fprintf(file, "%s,", (*finalInput)[i].language);
+                fprintf(file, "%s,", (*finalInput)[i].country);
+                fprintf(file, "%s,", (*finalInput)[i].content_rating);
+                fprintf(file, "%d,", (*finalInput)[i].budget);
+                fprintf(file, "%d,", (*finalInput)[i].title_year);
+                fprintf(file, "%d,", (*finalInput)[i].actor_2_facebook_likes);
+                fprintf(file, "%d,", (*finalInput)[i].imdb_score);
+                fprintf(file, "%d,", (*finalInput)[i].aspect_ratio);
+                fprintf(file, "%d\n", (*finalInput)[i].movie_facebook_likes);
+                i++;
+        }
+        printf("end loop\n");
+        free(filename);
+        free(modifiedOriginalFilename);
+        fclose(file);
+}
+
+void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
         //printf("Checking: %s\n", csvFilename);
 
         char buffer[1024];
@@ -1057,8 +1127,15 @@ void parser(char* csvFilePath, char* csvFilename, char* sortedColumn){
                         countline++;
                         s++;
                 }
+                printRecord(input, s);
+                mergeSort(&input, 0, s-1);
+                //Print contents of input
+
+                //print_csv_file(&input, csvFilePath, csvFilename, s, pathWOcsv);
         }
 }
+
+
 
 char isValidColumn(char* sortColumn){
         if(
@@ -1265,6 +1342,7 @@ void printDirInfo(char *directory, char * sortedColumn) {
 
                         Path[0] = '\0';
                         strcpy(Path, directory);
+                        char* pathWOcsv = Path;
                         strcat(Path, "/");
                         strcat(Path, object->d_name);
                         int fd = open(Path, O_RDONLY);
@@ -1278,7 +1356,8 @@ void printDirInfo(char *directory, char * sortedColumn) {
                         if(Path[len-1]=='v'&&Path[len-2]=='s'&&Path[len-3]=='c') {
                                 if(isAlreadySorted(Path) == 'f') {
                                         //Enable multithreading here
-                                        parser(Path, object->d_name,sortedColumn);
+                                        parser(Path, object->d_name, pathWOcsv);
+
                                 }
                         }
                         free(Path);
