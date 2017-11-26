@@ -1,8 +1,797 @@
 #include "sorter.h"
 
+char* sortedColumn;
+char* sortedColumnType;
 
+void merge(Records** arr, int l, int m, int r){
+        int i,j,k;
+        int n1 = m-l+1;
+        int n2 = r-m;
 
-void parser(char* csvFilePath, char* csvFilename, char* param){
+        Records* L = (Records*) malloc(sizeof(Records)*n1);
+        Records* R = (Records*) malloc(sizeof(Records)*n2);
+
+        for(i=0; i<n1; i++) {
+                L[i] = (*arr)[l+i];
+        }
+        for(i=0; i<n2; i++) {
+                R[i] = (*arr)[m+1+j];
+        }
+
+        i=0; //index of L
+        j=0; //index of R
+        k=l; //index of merged
+
+        //Compare between int, double, char*
+        if(strcmp(sortedColumnType, "int")== 0 || strcmp(sortedColumnType, "double")==0) {
+                if (strcmp(sortedColumn, "duration") == 0) {
+                        // printf("duration");
+                        while (i < n1 && j < n2) {
+                                if (L[i].duration <= R[j].duration) {
+                                        ( *arr)[k] = L[i];
+                                        i++;
+                                } else {
+                                        ( *arr)[k] = R[j];
+                                        j++;
+                                }
+                                k++;
+                        }
+
+                        while (i < n1) {
+                                ( *arr)[k] = L[i];
+                                i++;
+                                k++;
+                        }
+
+                        while (j < n2) {
+                                ( *arr)[k] = R[j];
+                                j++;
+                                k++;
+                        }
+
+                }
+
+                if (strcmp(sortedColumn, "num_critic_for_reviews") == 0) {
+                        printf("num_crtis");
+                        while (i < n1 && j < n2) {
+                                if (L[i].num_critic_for_reviews <= R[j].num_critic_for_reviews) {
+                                        ( *arr)[k] = L[i];
+                                        i++;
+                                } else {
+                                        ( *arr)[k] = R[j];
+                                        j++;
+                                }
+                                k++;
+                        }
+
+                        while (i < n1) {
+                                ( *arr)[k] = L[i];
+                                i++;
+                                k++;
+                        }
+
+                        while (j < n2) {
+                                ( *arr)[k] = R[j];
+                                j++;
+                                k++;
+                        }
+
+                }
+
+                if (strcmp(sortedColumn, "director_facebook_likes") == 0) {
+                        while (i < n1 && j < n2) {
+                                if (L[i].director_facebook_likes <= R[j].director_facebook_likes) {
+                                        ( *arr)[k] = L[i];
+                                        i++;
+                                } else {
+                                        ( *arr)[k] = R[j];
+                                        j++;
+                                }
+                                k++;
+                        }
+
+                        while (i < n1) {
+                                ( *arr)[k] = L[i];
+                                i++;
+                                k++;
+                        }
+
+                        while (j < n2) {
+                                ( *arr)[k] = R[j];
+                                j++;
+                                k++;
+                        }
+
+                }
+
+                if (strcmp(sortedColumn, "actor_3_facebook_likes") == 0) {
+                        while (i < n1 && j < n2) {
+                                if (L[i].actor_3_facebook_likes <= R[j].actor_3_facebook_likes) {
+                                        ( *arr)[k] = L[i];
+                                        i++;
+                                } else {
+                                        ( *arr)[k] = R[j];
+                                        j++;
+                                }
+                                k++;
+                        }
+
+                        while (i < n1) {
+                                ( *arr)[k] = L[i];
+                                i++;
+                                k++;
+                        }
+
+                        while (j < n2) {
+                                ( *arr)[k] = R[j];
+                                j++;
+                                k++;
+                        }
+
+                }
+
+                if (strcmp(sortedColumn, "actor_1_facebook_likes") == 0) {
+                        while (i < n1 && j < n2) {
+                                if (L[i].actor_1_facebook_likes <= R[j].actor_1_facebook_likes) {
+                                        ( *arr)[k] = L[i];
+                                        i++;
+                                } else {
+                                        ( *arr)[k] = R[j];
+                                        j++;
+                                }
+                                k++;
+                        }
+
+                        while (i < n1) {
+                                ( *arr)[k] = L[i];
+                                i++;
+                                k++;
+                        }
+
+                        while (j < n2) {
+                                ( *arr)[k] = R[j];
+                                j++;
+                                k++;
+                        }
+
+                }
+
+                if (strcmp(sortedColumn, "gross") == 0) {
+                        while (i < n1 && j < n2) {
+                                if (L[i].gross <= R[j].gross) {
+                                        ( *arr)[k] = L[i];
+                                        i++;
+                                } else {
+                                        ( *arr)[k] = R[j];
+                                        j++;
+                                }
+                                k++;
+                        }
+
+                        while (i < n1) {
+                                ( *arr)[k] = L[i];
+                                i++;
+                                k++;
+                        }
+
+                        while (j < n2) {
+                                ( *arr)[k] = R[j];
+                                j++;
+                                k++;
+                        }
+
+                }
+
+                if (strcmp(sortedColumn, "num_voted_users") == 0) {
+                        while (i < n1 && j < n2) {
+                                if (L[i].num_voted_users <= R[j].num_voted_users) {
+                                        ( *arr)[k] = L[i];
+                                        i++;
+                                } else {
+                                        ( *arr)[k] = R[j];
+                                        j++;
+                                }
+                                k++;
+                        }
+
+                        while (i < n1) {
+                                ( *arr)[k] = L[i];
+                                i++;
+                                k++;
+                        }
+
+                        while (j < n2) {
+                                ( *arr)[k] = R[j];
+                                j++;
+                                k++;
+                        }
+
+                }
+
+                if (strcmp(sortedColumn, "cast_total_facebook_likes") == 0) {
+                        while (i < n1 && j < n2) {
+                                if (L[i].cast_total_facebook_likes <= R[j].cast_total_facebook_likes) {
+                                        ( *arr)[k] = L[i];
+                                        i++;
+                                } else {
+                                        ( *arr)[k] = R[j];
+                                        j++;
+                                }
+                                k++;
+                        }
+
+                        while (i < n1) {
+                                ( *arr)[k] = L[i];
+                                i++;
+                                k++;
+                        }
+
+                        while (j < n2) {
+                                ( *arr)[k] = R[j];
+                                j++;
+                                k++;
+                        }
+
+                }
+
+                if (strcmp(sortedColumn, "facenumber_in_poster") == 0) {
+                        while (i < n1 && j < n2) {
+                                if (L[i].facenumber_in_poster <= R[j].facenumber_in_poster) {
+                                        ( *arr)[k] = L[i];
+                                        i++;
+                                } else {
+                                        ( *arr)[k] = R[j];
+                                        j++;
+                                }
+                                k++;
+                        }
+
+                        while (i < n1) {
+                                ( *arr)[k] = L[i];
+                                i++;
+                                k++;
+                        }
+
+                        while (j < n2) {
+                                ( *arr)[k] = R[j];
+                                j++;
+                                k++;
+                        }
+
+                }
+
+                if (strcmp(sortedColumn, "num_user_for_reviews") == 0) {
+                        while (i < n1 && j < n2) {
+                                if (L[i].num_user_for_reviews <= R[j].num_user_for_reviews) {
+                                        ( *arr)[k] = L[i];
+                                        i++;
+                                } else {
+                                        ( *arr)[k] = R[j];
+                                        j++;
+                                }
+                                k++;
+                        }
+
+                        while (i < n1) {
+                                ( *arr)[k] = L[i];
+                                i++;
+                                k++;
+                        }
+
+                        while (j < n2) {
+                                ( *arr)[k] = R[j];
+                                j++;
+                                k++;
+                        }
+
+                }
+
+                if (strcmp(sortedColumn, "budget") == 0) {
+                        while (i < n1 && j < n2) {
+                                if (L[i].budget <= R[j].budget) {
+                                        ( *arr)[k] = L[i];
+                                        i++;
+                                } else {
+                                        ( *arr)[k] = R[j];
+                                        j++;
+                                }
+                                k++;
+                        }
+
+                        while (i < n1) {
+                                ( *arr)[k] = L[i];
+                                i++;
+                                k++;
+                        }
+
+                        while (j < n2) {
+                                ( *arr)[k] = R[j];
+                                j++;
+                                k++;
+                        }
+
+                }
+
+                if (strcmp(sortedColumn, "title_year") == 0) {
+                        while (i < n1 && j < n2) {
+                                if (L[i].title_year <= R[j].title_year) {
+                                        ( *arr)[k] = L[i];
+                                        i++;
+                                } else {
+                                        ( *arr)[k] = R[j];
+                                        j++;
+                                }
+                                k++;
+                        }
+
+                        while (i < n1) {
+                                ( *arr)[k] = L[i];
+                                i++;
+                                k++;
+                        }
+
+                        while (j < n2) {
+                                ( *arr)[k] = R[j];
+                                j++;
+                                k++;
+                        }
+
+                }
+
+                if (strcmp(sortedColumn, "actor_2_facebook_likes") == 0) {
+                        while (i < n1 && j < n2) {
+                                if (L[i].actor_2_facebook_likes <= R[j].actor_2_facebook_likes) {
+                                        ( *arr)[k] = L[i];
+                                        i++;
+                                } else {
+                                        ( *arr)[k] = R[j];
+                                        j++;
+                                }
+                                k++;
+                        }
+
+                        while (i < n1) {
+                                ( *arr)[k] = L[i];
+                                i++;
+                                k++;
+                        }
+
+                        while (j < n2) {
+                                ( *arr)[k] = R[j];
+                                j++;
+                                k++;
+                        }
+
+                }
+
+                if (strcmp(sortedColumn, "imdb_score") == 0) {
+                        while (i < n1 && j < n2) {
+                                if (L[i].imdb_score <= R[j].imdb_score) {
+                                        ( *arr)[k] = L[i];
+                                        i++;
+                                } else {
+                                        ( *arr)[k] = R[j];
+                                        j++;
+                                }
+                                k++;
+                        }
+
+                        while (i < n1) {
+                                ( *arr)[k] = L[i];
+                                i++;
+                                k++;
+                        }
+
+                        while (j < n2) {
+                                ( *arr)[k] = R[j];
+                                j++;
+                                k++;
+                        }
+
+                }
+
+                if (strcmp(sortedColumn, "aspect_ratio") == 0) {
+                        while (i < n1 && j < n2) {
+                                if (L[i].aspect_ratio <= R[j].aspect_ratio) {
+                                        ( *arr)[k] = L[i];
+                                        i++;
+                                } else {
+                                        ( *arr)[k] = R[j];
+                                        j++;
+                                }
+                                k++;
+                        }
+
+                        while (i < n1) {
+                                ( *arr)[k] = L[i];
+                                i++;
+                                k++;
+                        }
+
+                        while (j < n2) {
+                                ( *arr)[k] = R[j];
+                                j++;
+                                k++;
+                        }
+
+                }
+
+                if (strcmp(sortedColumn, "movie_facebook_likes") == 0) {
+                        while (i < n1 && j < n2) {
+                                if (L[i].movie_facebook_likes <= R[j].movie_facebook_likes) {
+                                        ( *arr)[k] = L[i];
+                                        i++;
+                                } else {
+                                        ( *arr)[k] = R[j];
+                                        j++;
+                                }
+                                k++;
+                        }
+
+                        while (i < n1) {
+                                ( *arr)[k] = L[i];
+                                i++;
+                                k++;
+                        }
+
+                        while (j < n2) {
+                                ( *arr)[k] = R[j];
+                                j++;
+                                k++;
+                        }
+
+                }
+        }
+        if (strcmp(sortedColumnType, "string") == 0) {
+                if (strcmp(sortedColumn, "color") == 0) {
+
+                        while (i < n1 && j < n2) {
+
+                                if (strcmp(L[i].color, R[j].color) <= 0) {
+                                        ( *arr)[k] = L[i];
+                                        i++;
+                                } else {
+                                        ( *arr)[k] = R[j];
+                                        j++;
+                                }
+                                k++;
+                        }
+
+                        while (i < n1) {
+                                ( *arr)[k] = L[i];
+                                i++;
+                                k++;
+                        }
+
+                        while (j < n2) {
+                                ( *arr)[k] = R[j];
+                                j++;
+                                k++;
+                        }
+
+                }
+
+                if (strcmp(sortedColumn, "director_name") == 0) {
+
+                        while (i < n1 && j < n2) {
+
+                                if (strcmp(L[i].director_name, R[j].director_name) <= 0) {
+                                        ( *arr)[k] = L[i];
+                                        i++;
+                                } else {
+                                        ( *arr)[k] = R[j];
+                                        j++;
+                                }
+                                k++;
+                        }
+
+                        while (i < n1) {
+                                ( *arr)[k] = L[i];
+                                i++;
+                                k++;
+                        }
+
+                        while (j < n2) {
+                                ( *arr)[k] = R[j];
+                                j++;
+                                k++;
+                        }
+
+                }
+
+                if (strcmp(sortedColumn, "actor_2_name") == 0) {
+
+                        while (i < n1 && j < n2) {
+
+                                if (strcmp(L[i].actor_2_name, R[j].actor_2_name) <= 0) {
+                                        ( *arr)[k] = L[i];
+                                        i++;
+                                } else {
+                                        ( *arr)[k] = R[j];
+                                        j++;
+                                }
+                                k++;
+                        }
+
+                        while (i < n1) {
+                                ( *arr)[k] = L[i];
+                                i++;
+                                k++;
+                        }
+
+                        while (j < n2) {
+                                ( *arr)[k] = R[j];
+                                j++;
+                                k++;
+                        }
+
+                }
+
+                if (strcmp(sortedColumn, "genres") == 0) {
+
+                        while (i < n1 && j < n2) {
+
+                                if (strcmp(L[i].genres, R[j].genres) <= 0) {
+                                        ( *arr)[k] = L[i];
+                                        i++;
+                                } else {
+                                        ( *arr)[k] = R[j];
+                                        j++;
+                                }
+                                k++;
+                        }
+
+                        while (i < n1) {
+                                ( *arr)[k] = L[i];
+                                i++;
+                                k++;
+                        }
+
+                        while (j < n2) {
+                                ( *arr)[k] = R[j];
+                                j++;
+                                k++;
+                        }
+
+                }
+
+                if (strcmp(sortedColumn, "actor_1_name") == 0) {
+
+                        while (i < n1 && j < n2) {
+
+                                if (strcmp(L[i].actor_1_name, R[j].actor_1_name) <= 0) {
+                                        ( *arr)[k] = L[i];
+                                        i++;
+                                } else {
+                                        ( *arr)[k] = R[j];
+                                        j++;
+                                }
+                                k++;
+                        }
+
+                        while (i < n1) {
+                                ( *arr)[k] = L[i];
+                                i++;
+                                k++;
+                        }
+
+                        while (j < n2) {
+                                ( *arr)[k] = R[j];
+                                j++;
+                                k++;
+                        }
+
+                }
+
+                if (strcmp(sortedColumn, "movie_title") == 0) {
+
+                        while (i < n1 && j < n2) {
+
+                                if (strcmp(L[i].movie_title, R[j].movie_title) <= 0) {
+                                        ( *arr)[k] = L[i];
+                                        i++;
+                                } else {
+                                        ( *arr)[k] = R[j];
+                                        j++;
+                                }
+                                k++;
+                        }
+
+                        while (i < n1) {
+                                ( *arr)[k] = L[i];
+                                i++;
+                                k++;
+                        }
+
+                        while (j < n2) {
+                                ( *arr)[k] = R[j];
+                                j++;
+                                k++;
+                        }
+
+                }
+
+                if (strcmp(sortedColumn, "actor_3_name") == 0) {
+
+                        while (i < n1 && j < n2) {
+
+                                if (strcmp(L[i].actor_3_name, R[j].actor_3_name) <= 0) {
+                                        ( *arr)[k] = L[i];
+                                        i++;
+                                } else {
+                                        ( *arr)[k] = R[j];
+                                        j++;
+                                }
+                                k++;
+                        }
+
+                        while (i < n1) {
+                                ( *arr)[k] = L[i];
+                                i++;
+                                k++;
+                        }
+
+                        while (j < n2) {
+                                ( *arr)[k] = R[j];
+                                j++;
+                                k++;
+                        }
+
+                }
+
+                if (strcmp(sortedColumn, "plot_keywords") == 0) {
+
+                        while (i < n1 && j < n2) {
+
+                                if (strcmp(L[i].plot_keywords, R[j].plot_keywords) <= 0) {
+                                        ( *arr)[k] = L[i];
+                                        i++;
+                                } else {
+                                        ( *arr)[k] = R[j];
+                                        j++;
+                                }
+                                k++;
+                        }
+
+                        while (i < n1) {
+                                ( *arr)[k] = L[i];
+                                i++;
+                                k++;
+                        }
+
+                        while (j < n2) {
+                                ( *arr)[k] = R[j];
+                                j++;
+                                k++;
+                        }
+
+                }
+
+                if (strcmp(sortedColumn, "movie_imdb_link") == 0) {
+
+                        while (i < n1 && j < n2) {
+
+                                if (strcmp(L[i].movie_imdb_link, R[j].movie_imdb_link) <= 0) {
+                                        ( *arr)[k] = L[i];
+                                        i++;
+                                } else {
+                                        ( *arr)[k] = R[j];
+                                        j++;
+                                }
+                                k++;
+                        }
+
+                        while (i < n1) {
+                                ( *arr)[k] = L[i];
+                                i++;
+                                k++;
+                        }
+
+                        while (j < n2) {
+                                ( *arr)[k] = R[j];
+                                j++;
+                                k++;
+                        }
+
+                }
+
+                if (strcmp(sortedColumn, "language") == 0) {
+
+                        while (i < n1 && j < n2) {
+
+                                if (strcmp(L[i].language, R[j].language) <= 0) {
+                                        ( *arr)[k] = L[i];
+                                        i++;
+                                } else {
+                                        ( *arr)[k] = R[j];
+                                        j++;
+                                }
+                                k++;
+                        }
+
+                        while (i < n1) {
+                                ( *arr)[k] = L[i];
+                                i++;
+                                k++;
+                        }
+
+                        while (j < n2) {
+                                ( *arr)[k] = R[j];
+                                j++;
+                                k++;
+                        }
+
+                }
+
+                if (strcmp(sortedColumn, "country") == 0) {
+
+                        while (i < n1 && j < n2) {
+
+                                if (strcmp(L[i].country, R[j].country) <= 0) {
+                                        ( *arr)[k] = L[i];
+                                        i++;
+                                } else {
+                                        ( *arr)[k] = R[j];
+                                        j++;
+                                }
+                                k++;
+                        }
+
+                        while (i < n1) {
+                                ( *arr)[k] = L[i];
+                                i++;
+                                k++;
+                        }
+
+                        while (j < n2) {
+                                ( *arr)[k] = R[j];
+                                j++;
+                                k++;
+                        }
+
+                }
+
+                if (strcmp(sortedColumn, "content_rating") == 0) {
+
+                        while (i < n1 && j < n2) {
+
+                                if (strcmp(L[i].content_rating, R[j].content_rating) <= 0) {
+                                        ( *arr)[k] = L[i];
+                                        i++;
+                                } else {
+                                        ( *arr)[k] = R[j];
+                                        j++;
+                                }
+                                k++;
+                        }
+
+                        while (i < n1) {
+                                ( *arr)[k] = L[i];
+                                i++;
+                                k++;
+                        }
+
+                        while (j < n2) {
+                                ( *arr)[k] = R[j];
+                                j++;
+                                k++;
+                        }
+
+                }
+
+        }
+}
+
+void mergeSort(Records** input, int l, int r){
+        if(l<r) {
+                int m = l+(r-l)/2;
+                mergeSort(input, l, m);
+                mergeSort(input, m + 1, r);
+                merge(input, l, m, r);
+        }
+}
+
+void parser(char* csvFilePath, char* csvFilename, char* sortedColumn){
         //printf("Checking: %s\n", csvFilename);
 
         char buffer[1024];
@@ -306,7 +1095,128 @@ char isValidColumn(char* sortColumn){
         return 't';
 }
 
-char* isValidParameter(int argc, char* argv[]){
+char* findColumnDataType(const char* sortColumn){
+        char *data_type = (char*)malloc(sizeof(char)*30);
+
+        if(strcmp(sortColumn, "color") == 0) {
+                strncpy(data_type, "int", 10);
+                //data_type = 'int';
+                return data_type;
+        }
+        else if(strcmp(sortColumn, "director_name")==0) {
+                strncpy(data_type, "string", 10);
+                //printf("value after director_name %s\n", value);
+                return data_type;
+        }
+        else if(strcmp(sortColumn, "num_critic_for_reviews") == 0) {
+                strncpy(data_type, "int", 10);
+                return data_type;
+        }
+        else if(strcmp(sortColumn, "duration") == 0) {
+                strncpy(data_type, "int", 10);
+                return data_type;
+        }
+        else if(strcmp(sortColumn, "director_facebook_likes") == 0) {
+                strncpy(data_type, "int", 10);
+                return data_type;
+        }
+        else if(strcmp(sortColumn, "actor_3_facebook_likes") == 0) {
+                strncpy(data_type, "int", 10);
+                return data_type;
+        }
+        else if(strcmp(sortColumn, "actor_2_name") == 0) {
+                strncpy(data_type, "string", 10);
+                return data_type;
+        }
+        else if(strcmp(sortColumn, "actor_1_facebook_likes") == 0) {
+                strncpy(data_type, "int", 10);
+                return data_type;
+        }
+        else if(strcmp(sortColumn, "gross") == 0) {
+                strncpy(data_type, "int", 10);
+                return data_type;
+        }
+        else if(strcmp(sortColumn, "genres") == 0) {
+                strncpy(data_type, "string", 10);
+                return data_type;
+        }
+        else if(strcmp(sortColumn, "actor_1_name") == 0) {
+                strncpy(data_type, "string", 10);
+                return data_type;
+        }
+        else if(strcmp(sortColumn, "movie_title") == 0) {
+                strncpy(data_type, "string", 10);
+                return data_type;
+        }
+        else if(strcmp(sortColumn, "num_voted_users") == 0) {
+                strncpy(data_type, "int", 10);
+                return data_type;
+        }
+        else if(strcmp(sortColumn, "cast_total_facebook_likes") == 0) {
+                strncpy(data_type, "int", 10);
+                return data_type;
+        }
+        else if(strcmp(sortColumn, "actor_3_name") == 0) {
+                strncpy(data_type, "string", 10);
+                return data_type;
+        }
+        else if(strcmp(sortColumn, "facenumber_in_poster") == 0) {
+                strncpy(data_type, "int", 10);
+                return data_type;
+        }
+        else if(strcmp(sortColumn, "plot_keywords") == 0) {
+                strncpy(data_type, "string", 10);
+                return data_type;
+        }
+        else if(strcmp(sortColumn, "movie_imdb_link") == 0) {
+                strncpy(data_type, "string", 10);
+                return data_type;
+        }
+        else if(strcmp(sortColumn, "num_user_for_reviews") == 0) {
+                strncpy(data_type, "int", 10);
+                return data_type;
+        }
+        else if(strcmp(sortColumn, "language") == 0) {
+                strncpy(data_type, "string", 10);
+                return data_type;
+        }
+        else if(strcmp(sortColumn, "content_rating") == 0) {
+                strncpy(data_type, "int", 10);
+                return data_type;
+        }
+        else if(strcmp(sortColumn, "budget") == 0) {
+                strncpy(data_type, "int", 10);
+                return data_type;
+        }
+        else if(strcmp(sortColumn, "title_year") == 0) {
+                strncpy(data_type, "int", 10);
+                return data_type;
+        }
+        else if(strcmp(sortColumn, "actor_2_facebook_likes") == 0) {
+                strncpy(data_type, "int", 10);
+                return data_type;
+        }
+        else if(strcmp(sortColumn, "imdb_score") == 0) {
+                strncpy(data_type, "int", 10);
+                return data_type;
+        }
+        else if(strcmp(sortColumn, "aspect_ratio") == 0) {
+                strncpy(data_type, "int", 10);
+                return data_type;
+        }
+        else if(strcmp(sortColumn, "movie_facebook_likes") == 0) {
+                strncpy(data_type, "int", 10);
+                return data_type;
+        }
+        else{
+                printf("WRONG INPUT_ABORT\n");
+                strncpy(data_type, "invalid", 10);
+                exit(1);
+        }
+
+}
+
+char* isValidsortedColumneter(int argc, char* argv[]){
         int i;
         char* sortColumn = "z";
         for(i=0; i<sizeof(argv); i++) {
@@ -317,7 +1227,7 @@ char* isValidParameter(int argc, char* argv[]){
                                 //so check if sortColumn is a valid column to sort on
                                 sortColumn = argv[i+1];
                                 if(isValidColumn(sortColumn) == 'f') {
-                                        printf("invalid parameters\n");
+                                        printf("invalid sortedColumneters\n");
                                         exit(1);
                                 }
                                 return sortColumn;
@@ -338,7 +1248,7 @@ char isAlreadySorted(char* newPath){
         return 'f';
 }
 
-void printDirInfo(char *directory, char * param) {
+void printDirInfo(char *directory, char * sortedColumn) {
         DIR *current = NULL;
         struct dirent *object = NULL;
         if ((current = opendir(directory)) == NULL) {
@@ -368,7 +1278,7 @@ void printDirInfo(char *directory, char * param) {
                         if(Path[len-1]=='v'&&Path[len-2]=='s'&&Path[len-3]=='c') {
                                 if(isAlreadySorted(Path) == 'f') {
                                         //Enable multithreading here
-                                        parser(Path, object->d_name,param);
+                                        parser(Path, object->d_name,sortedColumn);
                                 }
                         }
                         free(Path);
@@ -382,7 +1292,7 @@ void printDirInfo(char *directory, char * param) {
                         strcpy(Path, directory);
                         strcat(Path, "/");
                         strcat(Path, object->d_name);
-                        printDirInfo(Path,param);
+                        printDirInfo(Path,sortedColumn);
                         free(Path);
                 }
         }
@@ -392,21 +1302,20 @@ void printDirInfo(char *directory, char * param) {
 
 int main(int argc, char * argv[]) {
         if(argc < 3) {
-                printf("invalid parameters\n");
+                printf("invalid sortedColumneters\n");
                 exit(1);
         }
         if(argc>7) {
-                printf("invalid parameters\n");
+                printf("invalid sortedColumneters\n");
                 exit(1);
         }
 
-        char* sortedColumn;
-        //finds out what to sort on and if the parameter is valid
-        sortedColumn = isValidParameter(argc, argv);
+        //finds out what to sort on and if the sortedColumneter is valid
+        sortedColumn = isValidsortedColumneter(argc, argv);
+        sortedColumnType = findColumnDataType(sortedColumn);
 
         char* startingDirectory = ".";
         char* outputDirectory;
-
 
         //determine if starting and output directories present
         int i;
