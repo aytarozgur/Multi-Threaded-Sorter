@@ -937,6 +937,13 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
                         exit(1);
                 }
                 input= (Records*)malloc(sizeof(Records)*8000);
+                ts = (pthread_t *)malloc(sizeof(pthread_t)*ts_limit);
+                sts = (struct names * ) malloc (sizeof(struct names)*ts_limit);
+
+
+
+
+
                 //we are gonna find out how many lines the file is
                 int amountOflines=0;
                 int commas;//keep track of the amount of commas in line
