@@ -11,6 +11,9 @@
 #include <stdio.h>
 #include <pthread.h>
 #include <math.h>
+#include<stdbool.h>
+#include <sys/types.h>
+
 
 typedef struct Records{
 char color[50];
