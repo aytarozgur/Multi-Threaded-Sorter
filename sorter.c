@@ -8,6 +8,7 @@ typedef struct parserVari {
         char csvfilePath[500];
         char csvfilename[500];
         char pathWocsv[500];
+        char sortedColumn[500]
 }parserVari;
 
 pthread_t * ts;//threads
@@ -19,9 +20,6 @@ Records* input;
 int amount_of_data=0;
 int target =6000;
 int a;//used to interate through the array
-
-
-
 
 void merge(Records** arr, int l, int m, int r){
         int i,j,k;
@@ -1174,7 +1172,7 @@ void* thread_func(void* structInfo){
         parserVari *parserInfo = (parserVari*)structInfo;
         char *filepath = (char*)malloc(sizeof(char*)*500);
         char *filename = (char*)malloc(sizeof(char*)*500);;
-        char *pathWocsv = (char*)malloc(sizeof(char*)*500);;
+        char *pathWocsv = (char*)malloc(sizeof(char*)*500);
 
         strcpy(filepath, parserInfo->csvfilePath);
         strcpy(filename, parserInfo->csvfilename);
@@ -1190,6 +1188,26 @@ void* thread_func(void* structInfo){
 
         parser(filepath,filename,pathWocsv);
         pthread_exit(NULL);
+        //free(filepath);
+        //free(filename);
+        //free(pathWocsv);
+}
+void* thread_directory(void* structDirInfo){
+        parserVari *parserInfo = (parserVari*)structDirInfo;
+        char *filepath = (char*)malloc(sizeof(char*)*500);
+        char *sortedColumn = (char*)malloc(sizeof(char*)*500);
+
+        strcpy(filepath, parserInfo->csvfilePath);
+        strcpy(sortedColumn, parserInfo->sortedColumn);
+
+        printf("filepath %s \n", filepath);
+        printf("sortedColumn %s\n", sortedColumn);
+        printDirInfo(filepath, sortedColumn);
+        pthread_exit(NULL);
+
+        //free(filepath);
+        //free(sortedColumn);
+
 }
 char isValidColumn(char* sortColumn){
         if(
@@ -1410,7 +1428,7 @@ void printDirInfo(char *directory, char * sortedColumn) {
                         if(Path[len-1]=='v'&&Path[len-2]=='s'&&Path[len-3]=='c') {
                                 if(isAlreadySorted(Path) == 'f') {
                                         //Enable multithreading here
-                                        struct parserVari temp;
+                                        parserVari temp;
                                         strcpy(temp.csvfilePath,Path);
                                         strcpy(temp.csvfilename,object->d_name);
                                         strcpy(temp.pathWocsv,pathWOcsv);
@@ -1429,7 +1447,13 @@ void printDirInfo(char *directory, char * sortedColumn) {
                         strcpy(Path, directory);
                         strcat(Path, "/");
                         strcat(Path, object->d_name);
-                        printDirInfo(Path,sortedColumn);
+                        //printDirInfo(Path,sortedColumn);
+                        parserVari temp2;
+                        strcpy(temp2.csvfilePath,Path);
+                        strcpy(temp2.sortedColumn,sortedColumn);
+                        structs[ts_index]=temp2;
+                        pthread_create(&ts[ts_index], NULL, thread_directory,&structs[ts_index]);
+                        ts_index+=1;
                         free(Path);
                 }
         }
@@ -1472,10 +1496,15 @@ int main(int argc, char * argv[]) {
         input= (Records*)malloc(sizeof(Records)*8000);
         ts = (pthread_t *)malloc(sizeof(pthread_t)*8000);
         structs = (struct parserVari * ) malloc (sizeof(parserVari)*8000);
-
+        i=0;
         printDirInfo(startingDirectory,sortedColumn);
+        for(i=0; i<ts_index; i++) {
+                pthread_join(ts[i],NULL);
+        }
         mergeSort(&input, 0, a-1);
         print_csv_file(&input, a,sortedColumn);
+
+
 
         return 0;
 }
