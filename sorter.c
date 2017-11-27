@@ -22,6 +22,7 @@ int a;//used to interate through the array
 
 void* thread_func(void* structInfo){
         //printf("csvFilePath: %s \t csvFilename: %s\t pathWOcsv %s\n", structInfo->csvfilePath, structInfo->csvfilename, structInfo->pathWOcsv);
+        printf("inside thread!\n");
         parserVari *parserInfo = (parserVari*)structInfo;
 
 }
