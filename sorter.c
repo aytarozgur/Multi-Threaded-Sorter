@@ -802,11 +802,22 @@ void printRecord(Records* input, int s){
 
 }
 void print_csv_file(Records** finalInput, char* csvFilePath, char* csvFilename, int arraySize, char* pathWOcsv){
+        printf("pathWocsv %s \n",pathWOcsv);
+        char token [50];
+        int n=0;
+        while(pathWOcsv[n]!='/')
+        {
+            //printf("i got in here\n");
+            token[n]=pathWOcsv[n];
+
+            n++;
+        }
+        //printf("this is token %s \n",token);
         char* filename = (char*)malloc(sizeof(char*)*100);
 
         char* modifiedOriginalFilename = (char*)malloc(sizeof(char*)*100);
 
-        strcat(filename, pathWOcsv);
+        strcat(filename, token);
         strcat(filename, "/");
 
         int i=0;
@@ -1156,7 +1167,7 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
                 mergeSort(&input, 0, s-1);
                 //Print contents of input
 
-                //print_csv_file(&input, csvFilePath, csvFilename, s, pathWOcsv);
+                print_csv_file(&input, csvFilePath, csvFilename, s, pathWOcsv);
         }
 }
 
