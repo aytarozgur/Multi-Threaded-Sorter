@@ -17,6 +17,8 @@ int ts_index=0;
 int ts_limit = 1045;
 
 Records* input;
+int amount_of_data=0;
+int target =6000;
 
 void merge(Records** arr, int l, int m, int r){
         int i,j,k;
@@ -936,9 +938,6 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
                         printf("invalid amount of categories\n");
                         exit(1);
                 }
-                input= (Records*)malloc(sizeof(Records)*8000);
-                ts = (pthread_t *)malloc(sizeof(pthread_t)*ts_limit);
-                sts = (struct names * ) malloc (sizeof(struct names)*ts_limit);
 
 
 
@@ -968,6 +967,16 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
                 while(countline <amountOflines)
                 {
                         fgets(line,500,fp);
+                        amount_of_data++;
+                        if(amount_of_data ==target){
+                           //target = target *2;
+                           //realloc
+                           amount_of_data=0;
+                           input= (Records*)realloc(input,sizeof(Records)+target);
+
+                        }
+
+
                         i=0;
                         commas=0;
                         length=strlen(line);//gets the next line
@@ -1466,6 +1475,10 @@ int main(int argc, char * argv[]) {
                         }
                 }
         }
+        input= (Records*)malloc(sizeof(Records)*8000);
+        ts = (pthread_t *)malloc(sizeof(pthread_t)*ts_limit);
+        sts = (struct names * ) malloc (sizeof(struct names)*ts_limit);
+
 
         printDirInfo(startingDirectory,sortedColumn);
 
