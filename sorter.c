@@ -819,26 +819,28 @@ void printRecord(Records* input, int s){
         }
 
 }
-void print_csv_file(Records** finalInput, char* csvFilePath, char* csvFilename, int arraySize, char* pathWOcsv){
-        printf("pathWocsv %s \n",pathWOcsv);
-        char token [50];
-        int n=0;
-        while(pathWOcsv[n]!='/')
-        {
-            //printf("i got in here\n");
-            token[n]=pathWOcsv[n];
+void print_csv_file(Records** finalInput,int arraySize, char*param){
+        //printf("pathWocsv %s \n",pathWOcsv);
+        char *token="AllFiles-sorted-";
+        printf("this is file name %s\n",token);
+        //printf("this is token %s",token);
 
-            n++;
-        }
-        //printf("this is token %s \n",token);
         char* filename = (char*)malloc(sizeof(char*)*100);
+        strcpy(filename, token);
+        printf("this is file name %s\n",filename);
+        strcat(filename, param);
+        printf("this is file name %s\n",filename);
+        strcat(filename, ".csv");
+        printf("this is file name %s\n",filename);
+        int i=0;
+        /*
 
         char* modifiedOriginalFilename = (char*)malloc(sizeof(char*)*100);
 
-        strcat(filename, token);
-        strcat(filename, "/");
 
-        int i=0;
+        //strcat(filename, "/");
+
+
         while(i<strlen(csvFilename)-4) {
                 modifiedOriginalFilename[i] = csvFilename[i];
                 i++;
@@ -846,7 +848,8 @@ void print_csv_file(Records** finalInput, char* csvFilePath, char* csvFilename, 
         strcat(filename, modifiedOriginalFilename);
         strcat(filename, "-sorted-");
         strcat(filename, sortedColumn);
-        strcat(filename, ".csv");
+
+        */
         FILE *file = fopen(filename, "w");
 
         i=0;
@@ -886,8 +889,9 @@ void print_csv_file(Records** finalInput, char* csvFilePath, char* csvFilename, 
         }
         printf("end loop\n");
         free(filename);
-        free(modifiedOriginalFilename);
+        //free(modifiedOriginalFilename);
         fclose(file);
+
 }
 
 void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
@@ -1484,6 +1488,7 @@ int main(int argc, char * argv[]) {
 
         printDirInfo(startingDirectory,sortedColumn);
         mergeSort(&input, 0, a-1);
+        print_csv_file(&input, a,sortedColumn);
 
         return 0;
 }
