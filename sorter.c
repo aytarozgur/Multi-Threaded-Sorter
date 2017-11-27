@@ -19,6 +19,7 @@ int ts_limit = 1045;
 Records* input;
 int amount_of_data=0;
 int target =6000;
+int a;//used to interate through the array
 
 void merge(Records** arr, int l, int m, int r){
         int i,j,k;
@@ -960,7 +961,7 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
                 int countline=0;//tracks what line we are currently on
                 char token [300];//holds the value for the category
                 int j=0;//used to iterate through token
-                int s=0;//used to interate through the array
+
                 int i=0;//used for interating through line
                 int length;
 
@@ -993,7 +994,7 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
                                         {
 
                                         case 1://this inputs the color token
-                                                strncpy(input[s].color, token, 50);
+                                                strncpy(input[a].color, token, 50);
                                                 //printf("s is:%d and token is %s\n",s,token);
                                                 //printf("input[s].color: %s\n",input[s].color);
                                                 memset(token, 0, 300);//empties token array
@@ -1001,56 +1002,56 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
                                                 break;
 
                                         case 2://inputs director_name token
-                                                strncpy(input[s].director_name, token, 50);
+                                                strncpy(input[a].director_name, token, 50);
                                                 //printf("s is:%d and token is %s\n",s,token);
                                                 //printf("input[s].director_name: %s\n",input[s].director_name);
                                                 memset(token, 0, 300);//empties token array
                                                 break;
 
                                         case 3:
-                                                input[s].num_critic_for_reviews=atoi(token);
+                                                input[a].num_critic_for_reviews=atoi(token);
                                                 //printf("s is:%d and token is %s\n",s,token);
                                                 //printf("input[s].numcriticforreviews: %d\n",input[s].num_critic_for_reviews);
                                                 memset(token, 0, 300);//empties token array
                                                 break;
 
                                         case 4:
-                                                input[s].duration=atoi(token);
+                                                input[a].duration=atoi(token);
                                                 memset(token, 0, 300);//empties token array
                                                 break;
 
                                         case 5:
-                                                input[s].director_facebook_likes=atoi(token);
+                                                input[a].director_facebook_likes=atoi(token);
                                                 memset(token, 0, 300);//empties token array
                                                 break;
 
                                         case 6:
-                                                input[s].actor_3_facebook_likes=atoi(token);
+                                                input[a].actor_3_facebook_likes=atoi(token);
                                                 memset(token, 0, 300);//empties token array
                                                 break;
 
                                         case 7:
-                                                strncpy(input[s].actor_2_name, token, 50);
+                                                strncpy(input[a].actor_2_name, token, 50);
                                                 memset(token, 0, 300);//empties token array
                                                 break;
 
                                         case 8:
-                                                input[s].actor_1_facebook_likes=atoi(token);
+                                                input[a].actor_1_facebook_likes=atoi(token);
                                                 memset(token, 0, 300);//empties token array
                                                 break;
 
                                         case 9:
-                                                input[s].gross=atoi(token);
+                                                input[a].gross=atoi(token);
                                                 memset(token, 0, 300);//empties token array
                                                 break;
 
                                         case 10:
-                                                strncpy(input[s].genres, token, 50);
+                                                strncpy(input[a].genres, token, 50);
                                                 memset(token, 0, 300);//empties token array
                                                 break;
 
                                         case 11:
-                                                strncpy(input[s].actor_1_name, token, 50);
+                                                strncpy(input[a].actor_1_name, token, 50);
                                                 memset(token, 0, 300);//empties token array
                                                 break;
 
@@ -1071,91 +1072,91 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
                                                         j++;
                                                         i++;
                                                 }
-                                                strncpy(input[s].movie_title, token, 50);
+                                                strncpy(input[a].movie_title, token, 50);
                                                 memset(token, 0, 300);//empties token array
                                                 break;
 
                                         case 13:
-                                                input[s].num_voted_users=atoi(token);
+                                                input[a].num_voted_users=atoi(token);
                                                 memset(token, 0, 300);//empties token array
                                                 break;
 
                                         case 14:
-                                                input[s].cast_total_facebook_likes=atoi(token);
+                                                input[a].cast_total_facebook_likes=atoi(token);
                                                 memset(token, 0, 300);//empties token array
                                                 break;
 
                                         case 15:
-                                                strncpy(input[s].actor_3_name, token, 50);
+                                                strncpy(input[a].actor_3_name, token, 50);
                                                 memset(token, 0, 300);//empties token array
                                                 break;
 
                                         case 16:
-                                                input[s].facenumber_in_poster=atoi(token);
+                                                input[a].facenumber_in_poster=atoi(token);
                                                 memset(token, 0, 300);//empties token array
                                                 break;
 
                                         case 17:
-                                                strncpy(input[s].plot_keywords, token, 50);
+                                                strncpy(input[a].plot_keywords, token, 50);
                                                 memset(token, 0, 300);//empties token array
                                                 break;
 
                                         case 18:
-                                                strncpy(input[s].movie_imdb_link, token, 50);
+                                                strncpy(input[a].movie_imdb_link, token, 50);
                                                 memset(token, 0, 300); //empties token array
                                                 //printf("this is imbd link %s\n",input[s].movie_imdb_link);
                                                 break;
 
                                         case 19:
-                                                input[s].num_user_for_reviews=atoi(token);
+                                                input[a].num_user_for_reviews=atoi(token);
                                                 memset(token, 0, 300); //empties token array
                                                 //printf("this is num user for review %i\n",input[s].num_user_for_reviews);
                                                 break;
 
                                         case 20:
-                                                strncpy(input[s].language, token, 50);
+                                                strncpy(input[a].language, token, 50);
                                                 memset(token, 0, 300); //empties token array
                                                 //printf("this is language %s\n",input[s].language);
                                                 break;
 
                                         case 21:
-                                                strncpy(input[s].country, token, 50);
+                                                strncpy(input[a].country, token, 50);
                                                 memset(token, 0, 300); //empties token array
                                                 //printf("this is language %s\n",input[s].country);
                                                 break;
 
                                         case 22:
-                                                strncpy(input[s].content_rating, token, 50);
+                                                strncpy(input[a].content_rating, token, 50);
                                                 memset(token, 0, 300); //empties token array
                                                 //printf("this is content rating %s\n",input[s].content_rating);
                                                 break;
 
                                         case 23:
-                                                input[s].budget=atoi(token);
+                                                input[a].budget=atoi(token);
                                                 memset(token, 0, 300); //empties token array
                                                 //printf("this is budget %i\n",input[s].budget);
                                                 break;
 
                                         case 24:
-                                                input[s].title_year=atoi(token);
+                                                input[a].title_year=atoi(token);
                                                 memset(token, 0, 300); //empties token array
                                                 //printf("this is title year %i\n",input[s].title_year);
                                                 break;
 
                                         case 25:
-                                                input[s].actor_2_facebook_likes=atoi(token);
+                                                input[a].actor_2_facebook_likes=atoi(token);
                                                 memset(token, 0, 300); //empties token array
                                                 //printf("this is actor 2 facebook likes %i\n",input[s].actor_2_facebook_likes);
                                                 break;
 
                                         case 26:
-                                                input[s].imdb_score=atoi(token);
+                                                input[a].imdb_score=atoi(token);
                                                 memset(token, 0, 300); //empties token array
                                                 //printf("this is imdb %i\n",input[s].imdb_score);
                                                 break;
 
                                         case 27:
-                                                input[s].aspect_ratio=atoi(token);
+                                                input[a].aspect_ratio=atoi(token);
                                                 memset(token, 0, 300); //empties token array
                                                 //printf("this is aspect ratio %i\n",input[s].aspect_ratio);
                                                 break;
@@ -1185,20 +1186,20 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
                         i++;
                         }
                         //printf("token is %s\n",token);
-                        input[s].movie_facebook_likes=atoi(token);
+                        input[a].movie_facebook_likes=atoi(token);
                         //printf("input[s].moviefacebooklikes %d\n",input[s].movie_facebook_likes);
                         memset(token, 0, 300); //empties token array
 
 
                         countline++;
-                        s++;
+                        a++;
                         j=0;
                 }
-                printRecord(input, s);
-                mergeSort(&input, 0, s-1);
+                //printRecord(input, s);
+                //mergeSort(&input, 0, s-1);
                 //Print contents of input
 
-                print_csv_file(&input, csvFilePath, csvFilename, s, pathWOcsv);
+                //print_csv_file(&input, csvFilePath, csvFilename, s, pathWOcsv);
         }
 }
 
@@ -1463,6 +1464,7 @@ int main(int argc, char * argv[]) {
 
         //determine if starting and output directories present
         int i;
+        a=0;
         for(i=0; i<sizeof(argv); i++) {
                 if(argv[i]!=NULL) {
                         //check if -d is present (optional)
@@ -1481,6 +1483,7 @@ int main(int argc, char * argv[]) {
 
 
         printDirInfo(startingDirectory,sortedColumn);
+        mergeSort(&input, 0, a-1);
 
         return 0;
 }
