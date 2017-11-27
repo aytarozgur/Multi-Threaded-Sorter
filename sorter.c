@@ -70,7 +70,7 @@ void merge(Records** arr, int l, int m, int r){
                 }
 
                 if (strcmp(sortedColumn, "num_critic_for_reviews") == 0) {
-                        printf("num_crtis");
+
                         while (i < n1 && j < n2) {
                                 if (L[i].num_critic_for_reviews <= R[j].num_critic_for_reviews) {
                                         ( *arr)[k] = L[i];
@@ -1200,8 +1200,8 @@ void* thread_directory(void* structDirInfo){
         strcpy(filepath, parserInfo->csvfilePath);
         strcpy(sortedColumn, parserInfo->sortedColumn);
 
-        printf("filepath %s \n", filepath);
-        printf("sortedColumn %s\n", sortedColumn);
+        //printf("filepath %s \n", filepath);
+        //printf("sortedColumn %s\n", sortedColumn);
         printDirInfo(filepath, sortedColumn);
         pthread_exit(NULL);
 
@@ -1498,9 +1498,14 @@ int main(int argc, char * argv[]) {
         structs = (struct parserVari * ) malloc (sizeof(parserVari)*8000);
         i=0;
         printDirInfo(startingDirectory,sortedColumn);
+        printf("Initial PID: %d\n", ts[0]);
+        printf("TIDS of all child threads:");
         for(i=0; i<ts_index; i++) {
+                printf("%d, ", ts[i]);
                 pthread_join(ts[i],NULL);
         }
+        printf("\nTotal number of threads: %d\n",ts_index);
+
         mergeSort(&input, 0, a-1);
         print_csv_file(&input, a,sortedColumn);
 
