@@ -3,6 +3,21 @@
 char* sortedColumn;
 char* sortedColumnType;
 
+struct names{
+
+    char file[400];
+    char dir[400];
+
+
+
+};
+pthread_t * ts;//threads
+struct names * sts; //structs
+int ts_index=0;
+int ts_limit = 1045;
+
+Records* input;
+
 void merge(Records** arr, int l, int m, int r){
         int i,j,k;
         int n1 = m-l+1;
@@ -921,7 +936,7 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
                         printf("invalid amount of categories\n");
                         exit(1);
                 }
-                Records* input= (Records*)malloc(sizeof(Records)*8000);
+                input= (Records*)malloc(sizeof(Records)*8000);
                 //we are gonna find out how many lines the file is
                 int amountOflines=0;
                 int commas;//keep track of the amount of commas in line
