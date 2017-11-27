@@ -3,10 +3,10 @@
 char* sortedColumn;
 char* sortedColumnType;
 
-struct names{
+struct names {
 
-    char file[400];
-    char dir[400];
+        char file[400];
+        char dir[400];
 
 
 
@@ -820,44 +820,19 @@ void printRecord(Records* input, int s){
 
 }
 void print_csv_file(Records** finalInput,int arraySize, char*param){
-        //printf("pathWocsv %s \n",pathWOcsv);
         char *token="AllFiles-sorted-";
-        printf("this is file name %s\n",token);
-        //printf("this is token %s",token);
 
         char* filename = (char*)malloc(sizeof(char*)*100);
         strcpy(filename, token);
-        printf("this is file name %s\n",filename);
         strcat(filename, param);
-        printf("this is file name %s\n",filename);
         strcat(filename, ".csv");
-        printf("this is file name %s\n",filename);
+        //printf("this is file name %s\n",filename);
         int i=0;
-        /*
-
-        char* modifiedOriginalFilename = (char*)malloc(sizeof(char*)*100);
-
-
-        //strcat(filename, "/");
-
-
-        while(i<strlen(csvFilename)-4) {
-                modifiedOriginalFilename[i] = csvFilename[i];
-                i++;
-        }
-        strcat(filename, modifiedOriginalFilename);
-        strcat(filename, "-sorted-");
-        strcat(filename, sortedColumn);
-
-        */
         FILE *file = fopen(filename, "w");
 
         i=0;
-        printf("loop\n");
         while(i!=arraySize) {
-                printf("in loop\n");
                 fprintf(file, "%s,", (*finalInput)[i].color);
-                printf("color\n");
                 fprintf(file, "%s,", (*finalInput)[i].director_name);
                 fprintf(file, "%d,", (*finalInput)[i].num_critic_for_reviews);
                 fprintf(file, "%d,", (*finalInput)[i].duration);
@@ -887,11 +862,9 @@ void print_csv_file(Records** finalInput,int arraySize, char*param){
                 fprintf(file, "%d\n", (*finalInput)[i].movie_facebook_likes);
                 i++;
         }
-        printf("end loop\n");
         free(filename);
         //free(modifiedOriginalFilename);
         fclose(file);
-
 }
 
 void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
@@ -944,10 +917,6 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
                         exit(1);
                 }
 
-
-
-
-
                 //we are gonna find out how many lines the file is
                 int amountOflines=0;
                 int commas;//keep track of the amount of commas in line
@@ -973,15 +942,12 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
                 {
                         fgets(line,500,fp);
                         amount_of_data++;
-                        if(amount_of_data ==target){
-                           //target = target *2;
-                           //realloc
-                           amount_of_data=0;
-                           input= (Records*)realloc(input,sizeof(Records)+target);
-
+                        if(amount_of_data ==target) {
+                                //target = target *2;
+                                //realloc
+                                amount_of_data=0;
+                                input= (Records*)realloc(input,sizeof(Records)+target);
                         }
-
-
                         i=0;
                         commas=0;
                         length=strlen(line);//gets the next line
@@ -1187,7 +1153,7 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
                                         }
 
                                 }
-                        i++;
+                                i++;
                         }
                         //printf("token is %s\n",token);
                         input[a].movie_facebook_likes=atoi(token);
@@ -1199,11 +1165,6 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
                         a++;
                         j=0;
                 }
-                //printRecord(input, s);
-                //mergeSort(&input, 0, s-1);
-                //Print contents of input
-
-                //print_csv_file(&input, csvFilePath, csvFilename, s, pathWOcsv);
         }
 }
 
@@ -1484,7 +1445,6 @@ int main(int argc, char * argv[]) {
         input= (Records*)malloc(sizeof(Records)*8000);
         ts = (pthread_t *)malloc(sizeof(pthread_t)*ts_limit);
         sts = (struct names * ) malloc (sizeof(struct names)*ts_limit);
-
 
         printDirInfo(startingDirectory,sortedColumn);
         mergeSort(&input, 0, a-1);
