@@ -20,11 +20,8 @@ int amount_of_data=0;
 int target =6000;
 int a;//used to interate through the array
 
-void* thread_func(void* structInfo){
-        //printf("csvFilePath: %s \t csvFilename: %s\t pathWOcsv %s\n", structInfo->csvFilePath, structInfo->);
-        parserVari *parserInfo = (parserVari*)structInfo;
 
-}
+
 
 void merge(Records** arr, int l, int m, int r){
         int i,j,k;
@@ -871,15 +868,14 @@ void print_csv_file(Records** finalInput,int arraySize, char*param){
         //free(modifiedOriginalFilename);
         fclose(file);
 }
-
 void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
-        //printf("Checking: %s\n", csvFilename);
+        //printf("Checking: %s \n", csvFilename);
 
         char buffer[1024];
         char *line;
         //char *token;
         const char* s = ",";
-        //open csv and check first row
+        //printf("csvFilePath %s\n", csvFilePath);
         FILE *fp  = fopen(csvFilePath, "r");
         if(fp == NULL) {
                 printf("error opening CSV %s\n", csvFilename);
@@ -1174,7 +1170,27 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
                 }
         }
 }
+void* thread_func(void* structInfo){
+        parserVari *parserInfo = (parserVari*)structInfo;
+        char *filepath = (char*)malloc(sizeof(char*)*500);
+        char *filename = (char*)malloc(sizeof(char*)*500);;
+        char *pathWocsv = (char*)malloc(sizeof(char*)*500);;
 
+        strcpy(filepath, parserInfo->csvfilePath);
+        strcpy(filename, parserInfo->csvfilename);
+        strcpy(pathWocsv, parserInfo->pathWocsv);
+
+        /*printf("parserInfo path: %s\n", parserInfo->csvfilePath);
+           printf("parserInfo name: %s\n", parserInfo->csvfilename);
+           printf("parserInfo pathWO: %s\n", parserInfo->pathWocsv);
+
+           printf(" **path: %s\n", filepath);
+           printf(" **name: %s\n", filename);
+           printf(" **pathWO: %s\n", pathWocsv); */
+
+        parser(filepath,filename,pathWocsv);
+        pthread_exit(NULL);
+}
 char isValidColumn(char* sortColumn){
         if(
                 strcmp(sortColumn, "color")!= 0
@@ -1356,7 +1372,7 @@ char isAlreadySorted(char* newPath){
         for(i=0; i<strlen(newPath); i++) {
                 if(newPath[i] == 's' && newPath[i+1] == 'o' && newPath[i+2] == 'r' && newPath[i+3] == 't'
                    && newPath[i+4] == 'e' && newPath[i+5] == 'd') {
-                        printf("THIS FILE IS ALREADY SORTED\n");
+                        //printf("Already Sorted %s\n", newPath);
                         return 't';
                 }
         }
@@ -1398,12 +1414,9 @@ void printDirInfo(char *directory, char * sortedColumn) {
                                         strcpy(temp.csvfilePath,Path);
                                         strcpy(temp.csvfilename,object->d_name);
                                         strcpy(temp.pathWocsv,pathWOcsv);
-
                                         structs[ts_index] = temp;
-                                        printf("this is structs index info %s\n",structs[ts_index].csvfilename);
                                         pthread_create(&ts[ts_index], NULL, thread_func, &structs[ts_index]);
                                         ts_index +=1;
-
                                 }
                         }
                         free(Path);
@@ -1437,6 +1450,7 @@ int main(int argc, char * argv[]) {
         //finds out what to sort on and if the sortedColumneter is valid
         sortedColumn = isValidsortedColumneter(argc, argv);
         sortedColumnType = findColumnDataType(sortedColumn);
+
         char* startingDirectory = ".";
         char* outputDirectory;
 
