@@ -8,8 +8,8 @@ typedef struct parserVari {
         char csvfilePath[500];
         char csvfilename[500];
         char pathWocsv[500];
-        char sortedColumn[500]
-}parserVari;
+        char sortedColumn[500];
+} parserVari;
 
 
 pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
@@ -21,7 +21,7 @@ int ts_limit = 1045;
 
 Records* input;
 int amount_of_data=0;
-int target =6000;
+int target =20000;
 int a;//used to interate through the array
 
 void merge(Records** arr, int l, int m, int r){
@@ -919,8 +919,8 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
 
                 if(commoncounter!=27)
                 {
-                        printf("invalid amount of categories\n");
-                        exit(1);
+                        //printf("invalid amount of categories\n");
+                        fclose(fp);
                 }
 
                 //we are gonna find out how many lines the file is
@@ -949,11 +949,13 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
                         fgets(line,500,fp);
 
                         amount_of_data++;
-                        if(amount_of_data ==target) {
-                                //target = target *2;
-                                //realloc
-                                amount_of_data=0;
-                                input=(Records*)realloc(input,sizeof(input)*(2*target));
+                        if(amount_of_data ==target-1) {
+                                target*=2;
+                                //amount_of_data=0;
+                                printf("realloc\n");
+                                input = (Records*)realloc(input, target*sizeof(Records));
+                                printf("done realloc\n");
+
                         }
 
                         i=0;
@@ -1338,6 +1340,10 @@ char* findColumnDataType(const char* sortColumn){
                 strncpy(data_type, "string", 10);
                 return data_type;
         }
+        else if(strcmp(sortColumn, "country") == 0) {
+                strncpy(data_type, "string", 10);
+                return data_type;
+        }
         else if(strcmp(sortColumn, "content_rating") == 0) {
                 strncpy(data_type, "int", 10);
                 return data_type;
@@ -1502,9 +1508,9 @@ int main(int argc, char * argv[]) {
                         }
                 }
         }
-        input= (Records*)malloc(sizeof(Records)*8000);
+        input= (Records*)malloc(sizeof(Records)*20000);
         ts = (pthread_t *)malloc(sizeof(pthread_t)*8000);
-        structs = (struct parserVari * ) malloc (sizeof(parserVari)*8000);
+        structs = (struct parserVari * ) malloc (sizeof(parserVari)*20000);
         i=0;
         printDirInfo(startingDirectory,sortedColumn);
         printf("Initial PID: %d\n", ts[0]);

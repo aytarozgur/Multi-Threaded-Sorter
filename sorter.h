@@ -34,7 +34,7 @@ char actor_3_name[50];
 int facenumber_in_poster;
 char plot_keywords[100];
 char movie_imdb_link[50];
-int num_user_for_reviews;
+int num_user_for_reviews;21
 char language[50];
 char country[100];
 char content_rating[50];
