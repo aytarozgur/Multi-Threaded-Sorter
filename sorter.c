@@ -11,6 +11,9 @@ typedef struct parserVari {
         char sortedColumn[500]
 }parserVari;
 
+
+pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+
 pthread_t * ts;//threads
 parserVari*structs;  //structs
 int ts_index=0;
@@ -869,6 +872,9 @@ void print_csv_file(Records** finalInput,int arraySize, char*param){
 void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
         //printf("Checking: %s \n", csvFilename);
 
+        //Lock thread
+        pthread_mutex_lock(&lock);
+
         char buffer[1024];
         char *line;
         //char *token;
@@ -878,6 +884,7 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
         if(fp == NULL) {
                 printf("error opening CSV %s\n", csvFilename);
                 fclose(fp);
+                pthread_mutex_unlock(&lock);
 
         }
         //No error in heading so continue parsing
@@ -946,7 +953,7 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
                                 //target = target *2;
                                 //realloc
                                 amount_of_data=0;
-                                input=(Records*)realloc(input,sizeof(Records)*(2*target));
+                                input=(Records*)realloc(input,sizeof(input)*(2*target));
                         }
 
                         i=0;
@@ -1166,6 +1173,7 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
                         a++;
                         j=0;
                 }
+                pthread_mutex_unlock(&lock);
         }
 }
 void* thread_func(void* structInfo){
@@ -1193,6 +1201,7 @@ void* thread_func(void* structInfo){
         //free(pathWocsv);
 }
 void* thread_directory(void* structDirInfo){
+        pthread_mutex_lock(&lock);
         parserVari *parserInfo = (parserVari*)structDirInfo;
         char *filepath = (char*)malloc(sizeof(char*)*500);
         char *sortedColumn = (char*)malloc(sizeof(char*)*500);
@@ -1203,8 +1212,8 @@ void* thread_directory(void* structDirInfo){
         //printf("filepath %s \n", filepath);
         //printf("sortedColumn %s\n", sortedColumn);
         printDirInfo(filepath, sortedColumn);
+        pthread_mutex_unlock(&lock);
         pthread_exit(NULL);
-
         //free(filepath);
         //free(sortedColumn);
 
@@ -1508,8 +1517,6 @@ int main(int argc, char * argv[]) {
 
         mergeSort(&input, 0, a-1);
         print_csv_file(&input, a,sortedColumn);
-
-
 
         return 0;
 }
