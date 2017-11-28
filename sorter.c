@@ -21,7 +21,7 @@ int ts_limit = 1045;
 
 Records* input;
 int amount_of_data=0;
-int target =20000;
+int target =1000;
 int a;//used to interate through the array
 
 void merge(Records** arr, int l, int m, int r){
@@ -869,6 +869,17 @@ void print_csv_file(Records** finalInput,int arraySize, char*param){
         //free(modifiedOriginalFilename);
         fclose(file);
 }
+
+
+int isValidCategories(char *line){
+        char token[50];
+        int length=strlen(line);
+
+
+
+        return 0;
+}
+
 void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
         //printf("Checking: %s \n", csvFilename);
 
@@ -904,6 +915,14 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
                 //this will hold the first line with all the categories
                 fgets(line,500,fp);
                 //printf("this is first line %s",line);
+                /*int categoryboolean=0;
+                   categoryboolean=isValidCategories(line);
+                   if(categoryboolean==0)
+                   {
+                        //close file
+                        printf("hello")
+
+                   }*/
 
                 int commoncounter=0;
                 int t=0;
@@ -953,7 +972,7 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
                                 target*=2;
                                 //amount_of_data=0;
                                 printf("realloc\n");
-                                input = (Records*)realloc(input, target*sizeof(Records));
+                                input = (Records*)realloc(input, amount_of_data+target*sizeof(Records));
                                 printf("done realloc\n");
 
                         }
@@ -1508,7 +1527,7 @@ int main(int argc, char * argv[]) {
                         }
                 }
         }
-        input= (Records*)malloc(sizeof(Records)*20000);
+        input= (Records*)malloc(sizeof(Records)*2000);
         ts = (pthread_t *)malloc(sizeof(pthread_t)*8000);
         structs = (struct parserVari * ) malloc (sizeof(parserVari)*20000);
         i=0;
