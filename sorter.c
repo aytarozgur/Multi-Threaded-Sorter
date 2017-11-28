@@ -822,13 +822,23 @@ void printRecord(Records* input, int s){
         }
 
 }
-void print_csv_file(Records** finalInput,int arraySize, char*param){
+void print_csv_file(Records** finalInput,int arraySize, char*param, char* path, char outputBoolean){
         char *token="AllFiles-sorted-";
-
+        //printf("output path: %s\n", path);
         char* filename = (char*)malloc(sizeof(char*)*100);
-        strcpy(filename, token);
-        strcat(filename, param);
-        strcat(filename, ".csv");
+
+        if(outputBoolean == 't') {
+                strcpy(filename, path);
+                strcat(filename, "/");
+                strcat(filename, token);
+                strcat(filename, param);
+                strcat(filename, ".csv");
+                //printf("filename %s\n", filename);
+        }else if(outputBoolean == 'f') {
+                strcpy(filename, token);
+                strcat(filename, param);
+                strcat(filename, ".csv");
+        }
         //printf("this is file name %s\n",filename);
         int i=0;
         FILE *file = fopen(filename, "w");
@@ -869,17 +879,183 @@ void print_csv_file(Records** finalInput,int arraySize, char*param){
         //free(modifiedOriginalFilename);
         fclose(file);
 }
-
-
 int isValidCategories(char *line){
         char token[50];
         int length=strlen(line);
+        int commas=0;
+        int j=0;
+        int i=0;
+        while(i<length) {
+
+                if(line[i]== ',')
+                {
+                        commas++;
+                        switch(commas) {
+                        case 1:
+                                if(strcmp(token,"color")!=0) {
+                                        return 1;
+                                }
+                                break;
+                        case 2:
+                                if(strcmp(token,"director_name")!=0) {
+                                        return 1;
+                                }
+                                break;
+                        case 3:
+                                if(strcmp(token,"num_critic_for_reviews")!=0) {
+                                        return 1;
+                                }
+                                break;
+                        case 4:
+                                if(strcmp(token,"duration")!=0) {
+                                        return 1;
+                                }
+                                break;
+                        case 5:
+                                if(strcmp(token,"director_facebook_likes")!=0) {
+                                        return 1;
+                                }
+                                break;
+                        case 6:
+                                if(strcmp(token,"actor_3_facebook_likes")!=0) {
+                                        return 1;
+                                }
+                                break;
+                        case 7:
+                                if(strcmp(token,"actor_2_name")!=0) {
+                                        return 1;
+                                }
+                                break;
+                        case 8:
+                                if(strcmp(token,"actor_1_facebook_likes")!=0) {
+                                        return 1;
+                                }
+                                break;
+                        case 9:
+                                if(strcmp(token,"gross")!=0) {
+                                        return 1;
+                                }
+                                break;
 
 
+                        case 10:
+                                if(strcmp(token,"genres")!=0) {
+                                        return 1;
+                                }
+                                break;
+                        case 11:
+                                if(strcmp(token,"actor_1_name")!=0) {
+                                        return 1;
+                                }
+                                break;
+                        case 12:
+                                if(strcmp(token,"movie_title")!=0) {
+                                        return 1;
+                                }
+                                break;
+                        case 13:
+                                if(strcmp(token,"num_voted_users")!=0) {
+                                        return 1;
+                                }
+                                break;
+                        case 14:
+                                if(strcmp(token,"cast_total_facebook_likes")!=0) {
+                                        return 1;
+                                }
+                                break;
+                        case 15:
+                                if(strcmp(token,"actor_3_name")!=0) {
+                                        return 1;
+                                }
+                                break;
+                        case 16:
+                                if(strcmp(token,"facenumber_in_poster")!=0) {
+                                        return 1;
+                                }
+                                break;
+                        case 17:
+                                if(strcmp(token,"plot_keywords")!=0) {
+                                        return 1;
+                                }
+                                break;
+                        case 18:
+                                if(strcmp(token,"movie_imdb_link")!=0) {
+                                        return 1;
+                                }
+                                break;
+                        case 19:
+                                if(strcmp(token,"num_user_for_reviews")!=0) {
+                                        return 1;
+                                }
+                                break;
+                        case 20:
+                                if(strcmp(token,"language")!=0) {
+                                        return 1;
+                                }
+                                break;
+                        case 21:
+                                if(strcmp(token,"country")!=0) {
+                                        return 1;
+                                }
+                                break;
+                        case 22:
+                                if(strcmp(token,"content_rating")!=0) {
+                                        return 1;
+                                }
+                                break;
+                        case 23:
+                                if(strcmp(token,"budget")!=0) {
+                                        return 1;
+                                }
+                                break;
+                        case 24:
+                                if(strcmp(token,"title_year")!=0) {
+                                        return 1;
+                                }
+                                break;
+                        case 25:
+                                if(strcmp(token,"actor_2_facebook_likes")!=0) {
+                                        return 1;
+                                }
+                                break;
+                        case 26:
+                                if(strcmp(token,"imdb_score")!=0) {
+                                        return 1;
+                                }
+                                break;
+                        case 27:
+                                if(strcmp(token,"aspect_ratio")!=0) {
+                                        return 1;
+                                }
+                                break;
+
+
+
+                        }
+                        //set token blank
+                        memset(token, 0, 50);
+                        i++;
+                        j=0;
+
+                }else{
+                        token[j]=line[i];
+                        i++;
+                        j++;
+
+                }
+
+
+
+
+
+        }
+
+        if(strcmp(token,"movie_facebook_likes")!=0) {
+                return 1;
+        }
 
         return 0;
 }
-
 void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
         //printf("Checking: %s \n", csvFilename);
 
@@ -915,14 +1091,16 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
                 //this will hold the first line with all the categories
                 fgets(line,500,fp);
                 //printf("this is first line %s",line);
-                /*int categoryboolean=0;
-                   categoryboolean=isValidCategories(line);
-                   if(categoryboolean==0)
+                int categoryboolean=0;
+                categoryboolean=isValidCategories(line);
+                //  printf("categorybool%d\n",categoryboolean );
+                /*if(categoryboolean==1)
                    {
                         //close file
-                        printf("hello")
-
+                        fclose(fp);
+                        pthread_mutex_unlock(&lock);
                    }*/
+
 
                 int commoncounter=0;
                 int t=0;
@@ -940,6 +1118,7 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
                 {
                         //printf("invalid amount of categories\n");
                         fclose(fp);
+                        pthread_mutex_unlock(&lock);
                 }
 
                 //we are gonna find out how many lines the file is
@@ -971,9 +1150,9 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
                         if(amount_of_data ==target-1) {
                                 target*=2;
                                 //amount_of_data=0;
-                                printf("realloc\n");
+                                //printf("realloc\n");
                                 input = (Records*)realloc(input, amount_of_data+target*sizeof(Records));
-                                printf("done realloc\n");
+                                //printf("done realloc\n");
 
                         }
 
@@ -1511,6 +1690,7 @@ int main(int argc, char * argv[]) {
 
         char* startingDirectory = ".";
         char* outputDirectory;
+        char outputBoolean = 'f';
 
         //determine if starting and output directories present
         int i;
@@ -1524,6 +1704,7 @@ int main(int argc, char * argv[]) {
                         //check if -o is present (optional)
                         if(strcmp("-o", argv[i]) == 0) {
                                 outputDirectory = argv[i+1];
+                                outputBoolean = 't';
                         }
                 }
         }
@@ -1541,7 +1722,8 @@ int main(int argc, char * argv[]) {
         printf("\nTotal number of threads: %d\n",ts_index);
 
         mergeSort(&input, 0, a-1);
-        print_csv_file(&input, a,sortedColumn);
+
+        print_csv_file(&input, a,sortedColumn, outputDirectory, outputBoolean);
 
         return 0;
 }
