@@ -17,7 +17,7 @@ pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 pthread_t * ts;//threads
 parserVari*structs;  //structs
 int ts_index=0;
-int ts_limit = 1045;
+int ts_limit = 300;
 
 Records* input;
 int amount_of_data=0;
@@ -1077,16 +1077,6 @@ void parser(char* csvFilePath, char* csvFilename, char* pathWOcsv){
         //No error in heading so continue parsing
         else
         {
-                //This is the first line in the CSV, check if valid headings
-                /*line = fgets(buffer, sizeof(buffer), file);
-                   token = strtok(line, s);
-                   while(token!=NULL) {
-                        //printf("token: %s\n", token);
-                        token = strtok(NULL, s);
-
-                        NEED TO HANDLE INVALID HEADINGS CASE
-
-                   }*/
                 char *line=(char*)malloc(sizeof(char)*500);
                 //this will hold the first line with all the categories
                 fgets(line,500,fp);
@@ -1641,6 +1631,12 @@ void printDirInfo(char *directory, char * sortedColumn) {
                         if(Path[len-1]=='v'&&Path[len-2]=='s'&&Path[len-3]=='c') {
                                 if(isAlreadySorted(Path) == 'f') {
                                         //Enable multithreading here
+                                        //Check if thread array limit reached, realloc
+                                        if(ts_index == ts_limit-1) {
+                                                ts_limit *= 2;
+                                                structs = realloc(structs, ts_index+sizeof(parserVari)*ts_limit);
+                                                ts = realloc(ts, sizeof(pthread_t)*ts_limit);
+                                        }
                                         parserVari temp;
                                         strcpy(temp.csvfilePath,Path);
                                         strcpy(temp.csvfilename,object->d_name);
@@ -1709,8 +1705,8 @@ int main(int argc, char * argv[]) {
                 }
         }
         input= (Records*)malloc(sizeof(Records)*2000);
-        ts = (pthread_t *)malloc(sizeof(pthread_t)*8000);
-        structs = (struct parserVari * ) malloc (sizeof(parserVari)*20000);
+        ts = (pthread_t *)malloc(sizeof(pthread_t)*100);
+        structs = (struct parserVari * ) malloc (sizeof(parserVari)*100);
         i=0;
         printDirInfo(startingDirectory,sortedColumn);
         printf("Initial PID: %d\n", ts[0]);
