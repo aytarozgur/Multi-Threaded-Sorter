@@ -17,7 +17,7 @@ pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 pthread_t * ts;//threads
 parserVari*structs;  //structs
 int ts_index=0;
-int ts_limit = 300;
+int ts_limit = 1024;
 
 Records* input;
 int amount_of_data=0;
@@ -1376,19 +1376,8 @@ void* thread_func(void* structInfo){
         strcpy(filename, parserInfo->csvfilename);
         strcpy(pathWocsv, parserInfo->pathWocsv);
 
-        /*printf("parserInfo path: %s\n", parserInfo->csvfilePath);
-           printf("parserInfo name: %s\n", parserInfo->csvfilename);
-           printf("parserInfo pathWO: %s\n", parserInfo->pathWocsv);
-
-           printf(" **path: %s\n", filepath);
-           printf(" **name: %s\n", filename);
-           printf(" **pathWO: %s\n", pathWocsv); */
-
         parser(filepath,filename,pathWocsv);
         pthread_exit(NULL);
-        //free(filepath);
-        //free(filename);
-        //free(pathWocsv);
 }
 void* thread_directory(void* structDirInfo){
         pthread_mutex_lock(&lock);
@@ -1399,14 +1388,9 @@ void* thread_directory(void* structDirInfo){
         strcpy(filepath, parserInfo->csvfilePath);
         strcpy(sortedColumn, parserInfo->sortedColumn);
 
-        //printf("filepath %s \n", filepath);
-        //printf("sortedColumn %s\n", sortedColumn);
         printDirInfo(filepath, sortedColumn);
         pthread_mutex_unlock(&lock);
         pthread_exit(NULL);
-        //free(filepath);
-        //free(sortedColumn);
-
 }
 char isValidColumn(char* sortColumn){
         if(
@@ -1614,7 +1598,6 @@ void printDirInfo(char *directory, char * sortedColumn) {
                 }
                 if (object->d_type == DT_REG) {
                         char * Path = (char *) malloc(strlen(object->d_name)+ strlen(directory) + 2);
-
                         Path[0] = '\0';
                         strcpy(Path, directory);
                         char* pathWOcsv = Path;
@@ -1632,11 +1615,13 @@ void printDirInfo(char *directory, char * sortedColumn) {
                                 if(isAlreadySorted(Path) == 'f') {
                                         //Enable multithreading here
                                         //Check if thread array limit reached, realloc
-                                        if(ts_index == ts_limit-1) {
+                                        /*if(ts_index == ts_limit-1) {
+                                                printf("Realloc\n");
                                                 ts_limit *= 2;
                                                 structs = realloc(structs, ts_index+sizeof(parserVari)*ts_limit);
                                                 ts = realloc(ts, sizeof(pthread_t)*ts_limit);
-                                        }
+                                                printf("done realloc\n");
+                                           }*/
                                         parserVari temp;
                                         strcpy(temp.csvfilePath,Path);
                                         strcpy(temp.csvfilename,object->d_name);
@@ -1647,6 +1632,7 @@ void printDirInfo(char *directory, char * sortedColumn) {
                                 }
                         }
                         free(Path);
+                        //pthread_mutex_unlock(&lock);
                 }
                 else if (object->d_type == DT_DIR) {
                         char * Path = (char *)malloc(strlen(object->d_name)
@@ -1657,6 +1643,7 @@ void printDirInfo(char *directory, char * sortedColumn) {
                         strcat(Path, "/");
                         strcat(Path, object->d_name);
                         //printDirInfo(Path,sortedColumn);
+
                         parserVari temp2;
                         strcpy(temp2.csvfilePath,Path);
                         strcpy(temp2.sortedColumn,sortedColumn);
@@ -1664,9 +1651,11 @@ void printDirInfo(char *directory, char * sortedColumn) {
                         pthread_create(&ts[ts_index], NULL, thread_directory,&structs[ts_index]);
                         ts_index+=1;
                         free(Path);
+
                 }
         }
         closedir(current);
+
         return;
 }
 
@@ -1705,8 +1694,8 @@ int main(int argc, char * argv[]) {
                 }
         }
         input= (Records*)malloc(sizeof(Records)*2000);
-        ts = (pthread_t *)malloc(sizeof(pthread_t)*100);
-        structs = (struct parserVari * ) malloc (sizeof(parserVari)*100);
+        ts = (pthread_t *)malloc(sizeof(pthread_t)*1024);
+        structs = (struct parserVari * ) malloc (sizeof(parserVari)*1024);
         i=0;
         printDirInfo(startingDirectory,sortedColumn);
         printf("Initial PID: %d\n", ts[0]);
